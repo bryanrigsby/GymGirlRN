@@ -1,0 +1,39 @@
+install expo and initialize project - https://docs.expo.io/
+1. npm install --global expo-cli
+2. expo init my-project
+
+install firebase - https://docs.expo.io/guides/using-firebase/
+1. npm install firebase
+2. create backend folder and server.js
+
+******make sure firebase is created and google is enabled under authentication in firebase before creating google credentials
+******google credentials must show Browser key, Web client OAuth, and firebase Service account
+
+set up navigation - https://reactnavigation.org/docs/getting-started/
+1. npm install @react-navigation/native @react-navigation/stack
+2. npm install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masked-view
+
+set up google user authentication  - https://docs.expo.io/versions/latest/sdk/google/
+1. sudo npm install expo-google-app-auth
+2. create client id's in google developer console 
+
+-create UI
+
+-fix keyboard pushing up screen with {minHeight: Math.round(useWindowDimensions().height)} - see cardio or strength screen
+
+-set up random Quotes  https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json
+
+fix googleUser error
+
+-add loading mechanism
+
+create github repo
+
+
+*work-around timer warning
+node_modules/react-native/Libraries/Core/Timers/JSTimer.js
+change line to -> const MAX_TIMER_DURATION_MS = 10000 * 1000;
+
+
+
+
