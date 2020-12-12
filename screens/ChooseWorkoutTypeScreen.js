@@ -4,7 +4,7 @@ import firebase from 'firebase';
 
 export default function ChooseWorkoutTypeScreen({route, navigation}) {
     
-  const {picture, userId} = route.params;
+  const {userId, username, picture} = route.params;
   
   return (
       <SafeAreaView style={styles.container}>
@@ -26,7 +26,7 @@ export default function ChooseWorkoutTypeScreen({route, navigation}) {
             onPress={() => firebase.auth().signOut()
               .then(function() {
                 navigation.navigate("Login");
-                console.log('Sign-out successful');
+                //console.log('Sign-out successful');
             })
               .catch(err => console.log("logout error: " + JSON.stringify(err)))}
             underlayColor='#fff'>
@@ -42,8 +42,9 @@ export default function ChooseWorkoutTypeScreen({route, navigation}) {
           <TouchableOpacity
             style={styles.bodyButton}
             onPress={() => navigation.navigate('Cardio', {
-              picture: picture,
-              userId: userId
+              userId: userId,
+              username: username,
+              picture: picture
             })}
             underlayColor='#fff'>
               <Text style={styles.bodyButtonText}>Cardio</Text>
@@ -52,8 +53,9 @@ export default function ChooseWorkoutTypeScreen({route, navigation}) {
           <TouchableOpacity
             style={styles.bodyButton}
             onPress={() => navigation.navigate('Strength', {
-              picture: picture,
-              userId: userId
+              userId: userId,
+              username: username,
+              picture: picture
             })}
             underlayColor='#fff'>
               <Text style={styles.bodyButtonText}>Strength</Text>

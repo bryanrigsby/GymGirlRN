@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, View, SafeAreaView, TouchableOpacity, Text, ScrollView, ActivityIndicator } from 'react-native';
-import {useEffect} from 'react';
 import firebase from 'firebase';
 
 export default function MotivationalScreen({route, navigation}){
 
-  const {picture} = route.params;
+  const {userId, username, picture} = route.params;
+
   const [quoteState, setQuoteState] = useState('As long as every generation rises to its challenges and stands up in defense of liberty - as Americans have done in the past and as our men and women continue to do today - our nation will remain free and strong.'
   );
   const [authorState, setAuthorState] = useState(' - Doc Hastings')
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getQuote();
+    let mounted = true;
+
+    if(mounted){
+      getQuote();
+
+    }
+    mounted = false;
+
     const reroute = setTimeout(() => {
       rerouteToHome();
-    }, 15000);
+    }, 10000);
+    
+    
     return () => clearTimeout(reroute);
+
+    
   }, []);
 
   const rerouteToHome = () => {
@@ -27,9 +38,9 @@ export default function MotivationalScreen({route, navigation}){
     return fetch('https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json')
       .then((response) => response.json())
       .then((json) => {
-          console.log(json.quoteText)
+          //console.log(json.quoteText)
           setQuoteState(json.quoteText)
-          setAuthorState(' - ' + json.quoteAuthor)
+          setAuthorState(json.quoteAuthor)
           setLoading(false);
       })
       .catch((error) => {
@@ -57,23 +68,26 @@ export default function MotivationalScreen({route, navigation}){
             onPress={() => firebase.auth().signOut()
               .then(function() {
                 navigation.navigate("Login");
-                console.log('Sign-out successful');
+                //console.log('Sign-out successful');
             })
-              .catch(err => console.log("logout error: " + JSON.stringify(err)))}
+              .catch(err => console.error("logout error: " + JSON.stringify(err)))}
             underlayColor='#fff'>
                 <Text style={styles.signOutText}>Sign Out</Text>
             </TouchableOpacity>
         </View>
 
         <View style={styles.welcomeMessage}>
-          <Text style={styles.welcomeMessageText}>You did it!!</Text>
+          <Text style={styles.welcomeMessageText}>You did it {username}!!</Text>
         </View>
 
-        {loading ? <ActivityIndicator size='large' color="#00bfff" style={styles.activityIndicator} /> : 
+        {loading ? 
+        <View style={styles.body}>
+          <ActivityIndicator size='large' color="#00bfff" style={styles.activityIndicator} />  
+        </View> :
         <View style={styles.body}>
           <ScrollView>
             <View style={styles.bodyItem}>
-              <Text style={styles.bodyItemText}>{quoteState} {authorState}</Text>
+              <Text style={styles.bodyItemText}>{quoteState} - {authorState}</Text>
             </View>
           </ScrollView>
         </View>
@@ -134,6 +148,7 @@ export default function MotivationalScreen({route, navigation}){
     body: {
       flex: 4,
       padding: 10,
+      alignItems: 'center'
     },
     bodyItem: {
       flex: 1,
@@ -144,13 +159,16 @@ export default function MotivationalScreen({route, navigation}){
       borderColor: '#00bfff',
       borderRadius: 10,
       justifyContent: 'center',
+      height: 400,
+      width: 350,
+      backgroundColor: '#00bfff'
     },
     bodyItemText: {
       color: 'white',
       fontWeight: 'bold',
       textTransform: 'uppercase',
       textAlign: 'center',
-      fontSize: 20
+      fontSize: 25
     },
 
 

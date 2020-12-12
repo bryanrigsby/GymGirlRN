@@ -1,6 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button, Image, FlatList, TouchableOpacity, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
 import firebase from 'firebase';
 
 export default function HomeScreen({route, navigation}) {
@@ -15,21 +14,34 @@ export default function HomeScreen({route, navigation}) {
   useEffect(() => {
     firebase
       .database()
-      .ref("/exercises")
+      .ref("exercises")
       .on("value", snapshot => {
         const data = snapshot.val();
         if(snapshot.val()){
-          //console.log("snapshot: " + JSON.stringify(data));
+          //console.log("data: " + JSON.stringify(data));
           const categories = [];
           Object
             .keys(data)
             .forEach(obj => categories.push(data[obj]))
             //console.log('categories: ' + JSON.stringify(categories));
             setExerciseCategory(categories);
-            setLoading(false)
         }
+
+        setLoading(false)
       });
   },[])
+
+  const getDate = (timestamp) => {
+    var months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var date = new Date(timestamp);
+    var year = date.getFullYear();
+    var month = months_arr[date.getMonth()];
+    var day = date.getDate();
+
+    var convDate = month + ' ' + day + ' ' + year;
+    return convDate
+  }
+
 
     return (
       <SafeAreaView style={styles.container}>
@@ -43,8 +55,9 @@ export default function HomeScreen({route, navigation}) {
           <TouchableOpacity
             style={styles.addWorkoutButton}
             onPress={() => navigation.navigate('ChooseWorkoutType', {
-              picture: picture,
-              userId: userId
+              userId: userId,
+              username: username,
+              picture: picture
             })}
             underlayColor='#fff'>
               <Text style={styles.addWorkoutButtonText}>Add Workout</Text>
@@ -54,7 +67,7 @@ export default function HomeScreen({route, navigation}) {
             onPress={() => firebase.auth().signOut()
               .then(function() {
                 navigation.navigate("Login");
-                console.log('Sign-out successful');
+                //console.log('Sign-out successful');
             })
               .catch(err => console.log("logout error: " + JSON.stringify(err)))}
             underlayColor='#fff'>
@@ -62,7 +75,12 @@ export default function HomeScreen({route, navigation}) {
             </TouchableOpacity>
         </View>
 
-        {loading ? <ActivityIndicator size="large" color="#00bfff" style={styles.activityIndicator} /> : 
+        {loading ? 
+        <View style={styles.welcomeMessage}>
+          <Text style={styles.welcomeMessageText}>Hey {username}!</Text> 
+          <ActivityIndicator size="large" color="#00bfff" style={styles.activityIndicator} />
+        </View>
+         : 
         <>
         <View style={styles.welcomeMessage}>
             {exerciseCategory && exerciseCategory.some(obj => userId == obj.user_id) ?
@@ -83,10 +101,11 @@ export default function HomeScreen({route, navigation}) {
           {exerciseCategory ? exerciseCategory.map((item, key) =>{
             if(item.category == 'cardio' && userId == item.user_id){
               return (
-                <View key={key} style={[styles.bodyItem, styles.cardioBodyItemBorder]}>
+                <View key={key} style={[styles.cardioBodyItem, styles.cardioBodyItemBorder]}>
                   <Text style={styles.cardioBodyItemText}>{item.category}</Text>
                   <Text style={styles.cardioBodyItemText}>{item.description}</Text>
-                  <Text style={styles.cardioBodyItemText}>{item.duration} minutes</Text>
+                  <Text style={styles.cardioBodyItemText}>{item.duration} mins</Text>  
+                  <Text style={styles.cardioBodyItemText}>{getDate(item.created_at)}</Text> 
                 </View>
                 ) 
             }
@@ -97,6 +116,7 @@ export default function HomeScreen({route, navigation}) {
                   <View style={[styles.bodyItem, styles.strengthBodyItemTopBorder]}>
                     <Text style={styles.strengthBodyItemText}>{item.category}</Text>
                     <Text style={styles.strengthBodyItemText}>{item.description}</Text>
+                    <Text style={styles.strengthBodyItemText}>{getDate(item.created_at)}</Text> 
                   </View>
                   <View style={[styles.bodyItem, styles.strengthBodyItemBottomBorder]}>
                     <Text style={styles.strengthBodyItemText}>{item.weight} lbs</Text>
@@ -149,7 +169,7 @@ export default function HomeScreen({route, navigation}) {
       fontWeight: 'bold',
     },
     activityIndicator: {
-      flex: 1,
+      marginBottom: 600,
       justifyContent: 'flex-start'
     },
     welcomeMessage: {
@@ -173,7 +193,14 @@ export default function HomeScreen({route, navigation}) {
       flexDirection: 'row',
       marginBottom: 10,
       paddingTop: 10,
-      paddingBottom: 10
+      paddingBottom: 10,
+    },
+    cardioBodyItem: {
+      flexDirection: 'row',
+      marginBottom: 10,
+      paddingTop: 10,
+      paddingBottom: 10,
+      paddingRight: 15
     },
     cardioBodyItemBorder: {
       borderStyle: 'solid',
@@ -204,7 +231,7 @@ export default function HomeScreen({route, navigation}) {
       borderBottomRightRadius: 10,
     },
     strengthBodyItemText: {
-      flex: 1,
+      flex: 2,
       color: 'white',
       fontWeight: 'bold',
       textTransform: 'uppercase',

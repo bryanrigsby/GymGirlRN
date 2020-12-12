@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity, SafeAreaView, ImageBackground } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, SafeAreaView, ImageBackground } from 'react-native';
 
 //google app auth and firebase imports
 import * as Google from 'expo-google-app-auth';
@@ -17,7 +17,7 @@ export default function LoginScreen ({navigation}) {
             var providerData = firebaseUser.providerData;
             for (var i = 0; i < providerData.length; i++) {
                 if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
-                    providerData[i].uid === googleUser.getBasicProfile().getId()) {
+                    providerData[i].uid === googleUser.user.id) {
                     // We don't need to reauth the Firebase connection.
                     return true;
                 }
@@ -115,7 +115,8 @@ export default function LoginScreen ({navigation}) {
 
 
     return (
-        <ImageBackground source={require('../assets/cartoonWorkoutGirl.jpg')} imageStyle={{opacity: 0.5}} style={styles.image}>
+        <ImageBackground source={require('../assets/bruno-nascimento-PHIgYUGQPvU-unsplash.jpg')} imageStyle={{opacity: 0.5}} style={styles.image}>
+            {/* <span>Photo by <a href="https://unsplash.com/@bruno_nascimento?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Bruno Nascimento</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span> */}
             <SafeAreaView>
                     <TouchableOpacity
                         style={styles.signinButton}
@@ -135,12 +136,13 @@ export default function LoginScreen ({navigation}) {
         width: null,
         height: null,
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         //opacity: 0.5
       },
     signinButton:{
-        height: 100,
+        height: 125,
+        marginTop: 50
       },
     signinButtonText:{
     color: '#ffaed7',

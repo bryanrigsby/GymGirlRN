@@ -6,7 +6,7 @@ import firebase from 'firebase';
 
 export default function CardioScreen({route, navigation}){
   
-  const {picture, userId} = route.params;
+  const {userId, username, picture} = route.params;
   const category = 'cardio';
   const firstRender = useRef(true);
   const [disabled, setDisabled] = useState(true);
@@ -58,25 +58,39 @@ export default function CardioScreen({route, navigation}){
     collection.description = descriptionState,
     collection.duration = durationState,
     collection.user_id = userId
+    collection.created_at = Date.now()
 
-    console.log("workoutState: " + JSON.stringify(collection));
-
+    //console.log("workoutState: " + JSON.stringify(collection));
+    
       firebase
         .database()
-        .ref('/exercises/')
+        .ref('exercises')
         .push({
           category: collection.category,
           description: collection.description,
           duration: collection.duration,
-          user_id: collection.user_id
+          user_id: collection.user_id,
+          created_at: collection.created_at
         })
 
     navigation.navigate('Motivational', {
+      userId: userId,
+      username: username,
       picture: picture
     })
     
   }
    
+  const getDate = (timestamp) => {
+    var months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var date = new Date(timestamp);
+    var year = date.getFullYear();
+    var month = months_arr[date.getMonth()];
+    var day = date.getDate();
+
+    var convDate = month + ' ' + day + ' ' + year;
+    return convDate
+  }
   
   return (
       <SafeAreaView style={[styles.container, {minHeight: Math.round(useWindowDimensions().height)}]}>
@@ -98,7 +112,7 @@ export default function CardioScreen({route, navigation}){
             onPress={() => firebase.auth().signOut()
               .then(function() {
                 navigation.navigate("Login");
-                console.log('Sign-out successful');
+                //console.log('Sign-out successful');
             })
               .catch(err => console.log("logout error: " + JSON.stringify(err)))}
             underlayColor='#fff'>
@@ -119,7 +133,7 @@ export default function CardioScreen({route, navigation}){
               autoCapitalize={"characters"}
               autoFocus={true}
               clearButtonMode={"always"}
-              maxLength={25}
+              maxLength={10}
               returnKeyType={"done"}
               textAlign={'center'}
               onChangeText={(value) => updateValue(value, 'description')}

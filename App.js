@@ -39,7 +39,7 @@ export default function App() {
             headerStyle: {
               backgroundColor: '#ffaed7',
               borderBottomColor: 'black',
-              borderBottomWidth: 2
+              borderBottomWidth: 1
             },
             headerTintColor: '#fff',
             headerTitleStyle: {

@@ -23,11 +23,11 @@ set up google user authentication  - https://docs.expo.io/versions/latest/sdk/go
 
 -set up random Quotes  https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json
 
-fix googleUser error
+--fix googleUser error, made change in isUserEqual()
 
 -add loading mechanism
 
-create github repo
+--create github repo
 
 
 *work-around timer warning
