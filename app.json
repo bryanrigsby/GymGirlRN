@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "GymGirl",
+    "description": "a simple workout app",
     "slug": "GymGirl",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffaed7"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
