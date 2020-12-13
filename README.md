@@ -1,6 +1,7 @@
 # GymGirlRN
  gym girl react native app
 
+![Screen Shot 2020-12-13 at 3 52 20 PM](https://user-images.githubusercontent.com/12769416/102025112-59a16600-3d5b-11eb-8be4-8a010b5353af.png)
 ![Screen Shot 2020-12-11 at 9 17 10 PM](https://user-images.githubusercontent.com/12769416/101971462-09a98e80-3bf7-11eb-987f-046b3084c9b5.png)
 ![Screen Shot 2020-12-11 at 9 18 22 PM](https://user-images.githubusercontent.com/12769416/101971463-0c0be880-3bf7-11eb-9a3f-abc93fae8063.png)
 ![Screen Shot 2020-12-11 at 9 18 39 PM](https://user-images.githubusercontent.com/12769416/101971464-0ca47f00-3bf7-11eb-928f-8e6493dc7718.png)
