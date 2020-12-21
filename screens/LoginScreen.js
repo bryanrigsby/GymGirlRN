@@ -6,8 +6,8 @@ import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
 
 //client ids
-const IOS_CLIENT_ID="709728114457-ti1di36e50eolqi06a00cptgqbpqprtr.apps.googleusercontent.com";
-const ANDROID_CLIENT_ID="709728114457-shrn9sae9hthjh0k1ehbf8i9l73hgj9o.apps.googleusercontent.com";
+const IOS_CLIENT_ID="removed for safety";
+const ANDROID_CLIENT_ID="removed for safety";
 
 export default function LoginScreen ({navigation}) {
 
